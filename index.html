@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTI 办公导航</title>
+    <style>
+        :root {
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --accent-color: #2563eb;
+            --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --card-border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.025em;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s ease-in-out;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--hover-shadow);
+            border-color: var(--accent-color);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .icon-wps { background-color: #eff6ff; color: #2563eb; }
+        .icon-xavier { background-color: #f0fdf4; color: #16a34a; }
+        .icon-dingtalk { background-color: #f0f9ff; color: #0284c7; }
+
+        .card-info h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .card-info p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 640px) {
+            header h1 { font-size: 1.75rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>CTI 办公导航</h1>
+            <p>cti-green.cn 内部快捷办公入口</p>
+        </header>
+
+        <main class="grid">
+            <a href="https://365.kdocs.cn/woa/im/messages" target="_blank" rel="noopener noreferrer" class="card">
+                <div class="icon-box icon-wps">✉️</div>
+                <div class="card-info">
+                    <h2>WPS 邮箱</h2>
+                    <p>网页版邮箱与消息</p>
+                </div>
+            </a>
+
+            <a href="https://365.kdocs.cn/woa/im/messages" target="_blank" rel="noopener noreferrer" class="card">
+                <div class="icon-box icon-wps">📹</div>
+                <div class="card-info">
+                    <h2>WPS 会议</h2>
+                    <p>网页版会议与沟通</p>
+                </div>
+            </a>
+
+            <div class="card" onclick="openApp('ksoxz://xz.wps.cn/open', 'WPS 协作', 'https://365.wps.cn/')">
+                <div class="icon-box icon-wps">💬</div>
+                <div class="card-info">
+                    <h2>WPS 协作文档</h2>
+                    <p>唤起客户端 / 下载</p>
+                </div>
+            </div>
+
+            <a href="https://xavierwang.top" target="_blank" rel="noopener noreferrer" class="card">
+                <div class="icon-box icon-xavier">♟️</div>
+                <div class="card-info">
+                    <h2>排兵布阵</h2>
+                    <p>xavierwang.top</p>
+                </div>
+            </a>
+
+            <div class="card" onclick="openApp('dingtalk://', '钉钉', 'https://www.dingtalk.com/download')">
+                <div class="icon-box icon-dingtalk">💼</div>
+                <div class="card-info">
+                    <h2>钉钉客户端</h2>
+                    <p>唤起客户端 / 下载</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            © CTI Green. All Rights Reserved.
+        </footer>
+    </div>
+
+    <script>
+        function openApp(schemeUrl, appName, downloadUrl) {
+            let hasFocus = true;
+
+            // 监听窗口失焦事件（如果唤起成功，页面失去焦点）
+            function onBlur() {
+                hasFocus = false;
+            }
+            window.addEventListener('blur', onBlur);
+
+            // 尝试打开软件
+            window.location.href = schemeUrl;
+
+            // 1.8 秒后检查页面是否依然保持焦点
+            setTimeout(function() {
+                window.removeEventListener('blur', onBlur);
+                if (hasFocus) {
+                    // 如果依然保持焦点，说明未安装或未唤起成功
+                    const confirmDownload = confirm("未检测到已安装的【" + appName + "】客户端。\n是否前往官网下载安装？");
+                    if (confirmDownload) {
+                        window.open(downloadUrl, '_blank');
+                    }
+                }
+            }, 1800);
+        }
+    </script>
+</body>
+</html>
